@@ -6,6 +6,10 @@ window.onload = function() {
     var sendButton = document.getElementById("send");
     var content = document.getElementById("content");
     var name = document.getElementById("name");
+    var generateButton = document.getElementById("generate");
+    var qrcodes = document.getElementById("qrcodes");
+    var url = document.getElementById("url");
+    const qr_code = require('qrcode')
 
     //message listener
     socket.on('message', function (data) {
@@ -22,6 +26,7 @@ window.onload = function() {
             console.log("There is a problem:", data);
         }
     });
+
     // button to send message to socket
     sendButton.onclick = function() {
     	if(name.value == "") {
@@ -30,6 +35,16 @@ window.onload = function() {
         var text = field.value;
         socket.emit('send', { message: text, username: name.value });
         field.value = '';
+        }
+    };
+
+    generateButton.onclick = function() {
+    	if(url.value == "") {
+            alert("Please enter url");
+        } else {
+        var urlgen = url.value;
+        socket.emit('generate', { generate: urlgen  });
+        url.value = '';
         }
     };
     // set enter key listener 

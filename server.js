@@ -6,6 +6,8 @@ const socketio = require('socket.io')
 const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
+const qr_code = require('qrcode')
+
 
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")))
@@ -19,6 +21,7 @@ const connections = [null, null]
 io.on('connection', socket => {
   // console.log('New WS Connection')
 
+ 
   // Find an available player number
   let playerIndex = -1;
   for (const i in connections) {
@@ -32,6 +35,17 @@ io.on('connection', socket => {
     socket.on('send', function (data) {
         io.sockets.emit('message', data);
     });
+
+  socket.on('generate', function (code) {
+    var file_path = "public/images"+ Date.now() +".png";
+    var url = urlgen
+    qr_code.toFile(file_path,url, {
+      color: {
+        dark: '#000',  // Black dots
+        light: '#0000' // Transparent background
+      }
+    });
+  });
 
 
 
@@ -87,10 +101,37 @@ io.on('connection', socket => {
     socket.broadcast.emit('fire-reply', square)
   })
 
+
   // Timeout connection
   setTimeout(() => {
     connections[playerIndex] = null
     socket.emit('timeout')
     socket.disconnect()
   }, 600000) // 10 minute limit per player
+
+  app.get('/', function(req, res){
+    res.render('index',{QR_code:''});
+  });
+  
+  app.post('/', function(req, res){
+    const url = req.body.url;
+    console.log(url);
+    if(url){
+      qr_code.toDataURL(url, function(err, src){
+        if(err){res.send(err); console.log(err);}
+        var file_path = "store/"+ Date.now() +".png";
+        qr_code.toFile(file_path,url, {
+          color: {
+            dark: '#000',  // Black dots
+            light: '#0000' // Transparent background
+          }
+        });
+        res.render('index',{QR_code:src,img_src:file_path}); 
+      });
+  
+    }else{
+      res.send('URL Not Set!');
+    }
+  
+  });
 })
