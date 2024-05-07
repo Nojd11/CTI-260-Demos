@@ -201,8 +201,8 @@ document.addEventListener('DOMContentLoaded', () => {
     generate(shipArray[4])
 
     startButton.addEventListener('click', () => {
-      setupButtons.style.display = 'none'
-      playGameSingle()
+      if(allShipsPlaced) playGameSingle(), setupButtons.style.display = 'none'
+      else infoDisplay.innerHTML = "Please place all ships"
     })
   }
 

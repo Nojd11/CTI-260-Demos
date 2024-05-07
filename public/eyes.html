@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Silly Eyes</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="eyes.js" charset="utf-8"></script>
+        <script src="DragDropTouch.js"></script>
+        <link rel="stylesheet" href="style.css">
+      </head>
+      <body style="background-color: black;">
+        <div class="eyes">
+          <div class="eye">
+            <div class="pupil"></div>
+          </div>
+          <div class="eye">
+            <div class="pupil"></div>
+          </div>
+        </div>
+        <div class="eyes2">
+            <div class="eye">
+              <div class="pupil"></div>
+            </div>
+            <div class="eye">
+              <div class="pupil"></div>
+            </div>
+          </div>
+          <div class="eyes3">
+            <div class="eye">
+              <div class="pupil"></div>
+            </div>
+            <div class="eye">
+              <div class="pupil"></div>
+            </div>
+          </div>
+          <div class="eyes2">
+            <div class="eye">
+              <div class="pupil"></div>
+            </div>
+            <div class="eye">
+              <div class="pupil"></div>
+            </div>
+          </div>
+          <div class="eyes3">
+            <div class="eye">
+              <div class="pupil"></div>
+            </div>
+            <div class="eye">
+              <div class="pupil"></div>
+            </div>
+          </div>
+          <div class="eyes">
+            <div class="eye">
+              <div class="pupil"></div>
+            </div>
+            <div class="eye">
+              <div class="pupil"></div>
+            </div>
+          </div>
+      </div>
+      
+          <script id="rendered-js">const pupils = document.querySelectorAll(".eye .pupil");
+            window.addEventListener("mousemove", (e) => {
+              pupils.forEach((pupil) => {
+                // get x and y postion of cursor
+                var rect = pupil.getBoundingClientRect();
+                var x = (e.pageX - rect.left) / 30 + "px";
+                var y = (e.pageY - rect.top) / 30 + "px";
+                pupil.style.transform = "translate3d(" + x + "," + y + ", 0px)";
+              });
+            });
+            </script>
+        </div>
+      </div>
+      <div style="margin-left: 15px;"><a href="/index.html" class="btn splash-btn">&lt;Back</a></div>
+    </body>
+</html>
